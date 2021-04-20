@@ -60,7 +60,7 @@ def admistrativas():
     elif(op=="4"):
         return Consultar_historial_de_reservaciones()
     elif(op=="5"):
-        return #incompleto
+        return Estadisticas_de_viaje()
     elif(op=="9"):
         return menu()
     else:
@@ -78,15 +78,15 @@ retrincciones:
 def usuarioNormal():
     print("\n")
     print("\t","\t","\t",">>>>>menu del usuario normal<<<<<","\n")
-    print("1. ")
-    print("2. ")
-    print("3. ")
-    print("9. menu principal. ")
+    print("1. Consulta de viajes.")
+    print("2. Reservación de viaje")
+    print("3. Cancelación de reservación.")
+    print("9. Salir. ")
     print("\n")
     op=input("Digite una de las opciones disponible: ")
     print("\n")
     if(op=="1"):
-        return
+        return consulta_de_viajes()
     elif(op=="2"):
         return
     elif(op=="3"):
@@ -174,6 +174,10 @@ def almacenarInformacion1(archivo):
     informacion.close()
     
     return almacenar
+
+#----------------------------------------------------------------------
+
+
 #-----------------------------------------------------------------------
 """
 nombre:
@@ -187,15 +191,25 @@ def eliminar_empresa():
     archivo=open("Gestion de empresa.txt")
     empresas=archivo.readlines()
     if((cedula+"\n") in empresas):
+        archivo1=open("Gestion de viaje.txt")
+        datos=archivo1.readlines()        
         linea = empresas.index(cedula+"\n")
-        eliminar=Eliminar_Empresa_aux(empresas,linea,0)
-        archivo.close()
-        archivo=open("Gestion de empresa.txt","w")
-        archivo.write(eliminar)
-        archivo.close()
-        print(f"La empresa con la cedula {cedula} a sido eliminado exitosamente ")
-        print("\n")
-        return Gestion_de_empresas()
+        verificar=verificar_aux(empresas,linea+1,0,[])
+        if(verificar+"\n") in datos:
+            print("\n")
+            print("Esa empresa esta asociada a un transporte. ")
+            print("\n")
+            return eliminar_empresa()
+
+        else:
+            eliminar=Eliminar_Empresa_aux(empresas,linea,0)
+            archivo.close()
+            archivo=open("Gestion de empresa.txt","w")
+            archivo.write(eliminar)
+            archivo.close()
+            print(f"La empresa con la cedula {cedula} a sido eliminado exitosamente ")
+            print("\n")
+            return Gestion_de_empresas()
     else:
         print(f"No se encontro ningúna empresa con la cedula {cedula} ,vuelva a intentarlo. ")
         archivo.close()
@@ -206,6 +220,24 @@ def eliminar_empresa():
     
 
 #------------------------------------------------------------------------------------------------
+
+"""
+nombre:
+entrada:
+salida:
+retrincciones:
+"""
+def verificar_aux(listaDeEmpresa,linea,cont,datos):
+    if cont ==1 :#Se hace la debida verificación de la restricción.
+        return Convertir_A_String(datos)
+    else:#Si la primera restricción no se cumple se retorna a esta.
+        datos+=[listaDeEmpresa[linea].rstrip()]
+        return verificar_aux(listaDeEmpresa, linea + 1, cont + 1,datos)
+
+
+
+#---------------------------------------------------------------------------------------------------------
+    
 """
 nombre:
 entrada:
@@ -931,10 +963,53 @@ def Consultar_historial_de_reservaciones():
         print("\n")
         return Consultar_historial_de_reservaciones()
     
+#-----------------------------------------------------------------------------------------------------------------------------
 
+
+def Estadisticas_de_viaje():
+    print()
 
 #----------------------------------------------------------------------------------------------------------------------------------
 
 
+def consulta_de_viajes():
+    print("\n")
+    print("\t","\t","\t",">>>>>menu de consulta de viajes<<<<<")
+    print("\n")
+    print("1. Empresa. ")
+    print("2. Lugar de salida.")
+    print("3. Lugar de llegadda. ")
+    print("4. Rango de fecha de salida. ")
+    print("5. Rango de fecha de llegada. ")
+    print("6. Regresar. ")
+    op=input("Seleccione el filtro que necesite: ")
+    if(op=="1"):
+        return
+    elif(op=="2"):
+        return
+    elif(op=="3"):
+        return
+    elif(op=="4"):
+        return
+    elif(op=="4"):
+        return
+    elif(op=="5"):
+        return
+    elif(op=="6"):
+        return usuarioNormal()
+    else:
+        print("\n")
+        print("ERROR,Ingrese una de las opciones disponible, la opcion {op} no esta disponible o no existe.")
+        print("\n")
+        return consulta_de_viajes()
+#----------------------------------------------------------------------------------------------------------------------------
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------
+
+    
+
+    
 menu()
 
