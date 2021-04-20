@@ -56,7 +56,11 @@ def admistrativas():
     elif(op=="2"):
         return Gestion_de_transporte()
     elif(op=="3"):
-        return 
+        return Gestion_de_viaje()
+    elif(op=="4"):
+        return Consultar_historial_de_reservaciones()
+    elif(op=="5"):
+        return #incompleto
     elif(op=="9"):
         return menu()
     else:
@@ -407,7 +411,7 @@ def incluir():
         print(lista)
         empresas=open("Gestion de empresa.txt")
         empresas=empresas.readlines()
-        empresa=input("Ingrese el nombre de una de las empresas exixtente: ")
+        empresa=input("Ingrese el nombre de una de las empresas exitente: ")
         if (empresa+"\n") in empresas:
             claseVip=input("Ingrese la cantidad de asiento Vip: ")
             claseNormal=input("Ingrese la catidad de asiento de clase normal: ")
@@ -602,9 +606,335 @@ def mostrar_Transporte():
 
 #-----------------------------------------------------------------------------------------------------------------------
 
+def Gestion_de_viaje():
+    print("\t","\t","\t",">>>>>Gestion de viaje<<<<<")
+    print("1. registrar viajes")
+    print("2. eliminar viajes")
+    print("3. Modificar viajes ")
+    print("4. mostrar viajes")
+    print("5. regresar")
+    print("\n")
+    op=input("Digite una de las opciones disponible: ")
+    if(op=="1"):
+        return registrar_viajes()
+    elif(op=="2"):
+        return eliminar_viajes()
+    elif(op=="3"):
+        return modificar_viaje()
+    elif(op=="4"):
+        return mostrar_viajes()
+    elif(op=="5"):
+        return admistrativas()
+    else:
+        print("\n")
+        print("Ingrese una de las opciones disponible,la opcion {op} no existe o no esta disponible")
+        print("\n")
+        return Gestion_de_viaje()
+    
+
+#-----------------------------------------------------------------------------------------------
+
+def registrar_viajes():
+    archivo="Gestion de viaje.txt "
+    archivo=open(archivo,"a")
+    numero_de_viaje=numero_de_viaje_aux()
+    ciudad_de_salida=input("Ingrese la ciudad de salida: ")
+    fecha=input("Ingrese la fecha de salida: ")
+    hora_de_salida=input("Ingrese la hora de salidad del viaje: ")
+    ciudad_de_llegada=input("Ingrese la ciudad de llegada: ")
+    fecha_de_llegada=input("Ingrese la fecha de la llegada: ")
+    hora_de_llegada=input("Ingrese la hora de la llegada: ")
+    transporte=ListaDeTransporte()
+    lista=open("Gestion de transporte.txt")
+    lista=lista.read()
+    print(lista)
+    empresa=input("Digite el nombre la empresa del cual desea viajar: ")
+    
+    if(empresa+"\n")in transporte:
+        montos=input("1. clase VIP= $100,2. clase normal=$50,3. clase economica=$25, digite la clase que desea viajar: ")
+        if(montos=="1"):
+            numero_de_viaje=str(numero_de_viaje)
+            archivo.write("numero de viaje: "+numero_de_viaje+"\n")
+            archivo.write(ciudad_de_salida+"\n")
+            archivo.write(fecha+"\n")
+            archivo.write(hora_de_salida+"\n")
+            archivo.write(ciudad_de_llegada+"\n")
+            archivo.write(fecha_de_llegada+"\n")
+            archivo.write(hora_de_llegada+"\n")
+            archivo.write(empresa+"\n")
+            archivo.write("clase VIP:$100"+"\n")
+            archivo.write("--------------------------------"+"\n")
+            archivo.close()
+            print("\t","\t","\t",">>>>>viaje registado exitosamento<<<<<")
+            print("\n")
+            return Gestion_de_viaje()
+        elif(montos=="2"):
+            archivo.write("numero de viaje: "+numero_de_viaje+"\n")
+            archivo.write(ciudad_de_salida+"\n")
+            archivo.write(fecha+"\n")
+            archivo.write(hora_de_salida+"\n")
+            archivo.write(ciudad_de_llegada+"\n")
+            archivo.write(fecha_de_llegada+"\n")
+            archivo.write(hora_de_llegada+"\n")
+            archivo.write(empresa+"\n")
+            archivo.write("clase normal:$50"+"\n")
+            archivo.write("--------------------------------"+"\n")
+            archivo.close()
+            print("\t","\t","\t",">>>>>viaje registado exitosamento<<<<<")
+            return Gestion_de_viaje()
+        elif(montos=="3"):
+            archivo.write("numero de viaje: "+numero_de_viaje+"\n")
+            archivo.write(ciudad_de_salida+"\n")
+            archivo.write(fecha+"\n")
+            archivo.write(hora_de_salida+"\n")
+            archivo.write(ciudad_de_llegada+"\n")
+            archivo.write(fecha_de_llegada+"\n")
+            archivo.write(hora_de_llegada+"\n")
+            archivo.write(empresa+"\n")
+            archivo.write("clase economica:$25"+"\n")
+            archivo.write("--------------------------------"+"\n")
+            archivo.close()
+            print("\t","\t","\t",">>>>>viaje registado exitosamento<<<<<")
+            return Gestion_de_viaje()
+        else:
+            print("\n")
+            print("Ingrese una de las clases existente. ")
+            print("\n")
+            return Gestion_de_viaje()
+            
+    else:
+        print("\n")
+        print("Ingrese una empresa existente. ")
+        print("\n")
+        return registrar_viajes()
+
+
+#-----------------------------------------------------------------------------
+
+def numero_de_viaje_aux():
+    archivo="Gestion de viaje.txt"
+    agenda= open (archivo,'r')#Se abre el archivo en el modo que deseamos.
+    """
+    En la función *f. = open (nombreArchivo,'r')* donde f. corresponde a file que es un dato o información
+    que se guarda en el dispositivo de almacenamiento de la computadora. A nuestra variable file le dimos el
+    nombre de agenda para que fuera de mejor entendimiento.
+    """
+    contador =1
+    for linea in agenda:
+        contador+=1 #Agregamos un contador para que el usuario pueda ver en que linea corresponde a cada dato. 
+    agenda.close()
+    return contador//9
+#----------------------------------------------------------------------------------------------------------------------------
+
+def eliminar_viajes():
+    numero_de_viaje=input("Ingrese el numero de su viaje: ")
+    numero_de_viaje=str(numero_de_viaje)
+    archivo=open("Gestion de viaje.txt")
+    datos=archivo.readlines()
+    if("numero de viaje: "+numero_de_viaje+"\n")in datos:
+        linea = datos.index("numero de viaje: "+numero_de_viaje+"\n")
+        eliminar=Eliminar_viaje_aux(datos,linea,0)
+        archivo.close()
+        archivo=open("Gestion de viaje.txt","w")
+        archivo.write(eliminar)
+        archivo.close()
+        print(f"El voleto con el numero de viaje {numero_de_viaje} a sido eliminado exitosamente. ")
+        print("\n")
+        return Gestion_de_viaje()
+    else:
+        print("\n")
+        print("el numero de viaje {numero_de_viaje} no existe,ingrese otro numero de viaje. ")
+        print("\n")
+        return Gestion_de_viaje()
+        
+
+#------------------------------------------------------------------------------------------------------------------------------
+
+def Eliminar_viaje_aux(viajes,linea,cont):
+    if (cont==10):
+        return Convertir_A_String(viajes)
+    else:
+        print(viajes[linea].rstrip())
+        viajes.pop(linea)
+        return Eliminar_viaje_aux(viajes,linea,cont+1)
+
+#-----------------------------------------------------------------------------------------------------------------------------
+def modificar_viaje():
+    numero=input("Ingrese el numero de viaje,del viaje a modificar: ")
+    archivo=open("Gestion de viaje.txt")
+    datos=archivo.readlines()
+    if (("numero de viaje: "+numero + "\n") in datos):#Verificamos que el número de cédula se encuetre en el archivo. 
+        linea = datos.index("numero de viaje: "+numero+ "\n")
+        Mostrar_viaje(datos, linea, 0)
+        viaje_Modificado = Modificar_viaje_Aux(datos, linea, 0)#Se creo una variable para ingresar los nuevos datos.
+        Gestion = open("Gestion de viaje.txt", "w")#Se abre el archivo en el modo que deseamos.
+        """
+        En la función *f. = open (nombreArchivo,'r')* donde f. corresponde a file que es un dato o información
+        que se guarda en el dispositivo de almacenamiento de la computadora. A nuestra variable file le dimos el
+        nombre de agenda para que fuera de mejor entendimiento.
+        """
+        Gestion.write(Convertir_A_String(viaje_Modificado))#Se escribe la modificación de la empresa en el archivo.
+        Gestion.close()#Importante cerrar el archivo.
+        """
+        En la función *f.close()* donde f. corresponde a file y a nuestra variable file le dimos el
+        nombre de agenda para que fuera de mejor entendimiento.
+        """
+        print("\n", "\t", "\t", "\t","¡Viaje modificado con éxito! ")
+        print("\n")
+        return Gestion_de_viaje()
+    else:
+        print(f"No tienes ningú transporte con la matricula {numero} vuelva a intentarlo de nuevo.")
+        return modificar_viaje()#Retorna nuevamente a la función para que el usuario lo vuelva a intentar.
+
+
+
+
+#_-------------------------------------------------------------------------------------------------------------------------------------
+    
+
+def Mostrar_viaje(listaDeViaje, linea, cont):
+    if cont > 10:#Se hace la debida verificación de la restricción.
+        print("\n")
+    else:#Si la primera restricción no se cumple se retorna a esta.
+        print(listaDeViaje[linea].rstrip())
+        return Mostrar_viaje(listaDeViaje, linea + 1, cont + 1)
+
+#-------------------------------------------------------------------------------------------
+
+
+def Modificar_viaje_Aux(viaje, linea , cont):
+    if cont == 8:
+        return viaje#Archivo al cual le se le dió ese nombre.
+    else:#Se hacen las modificaciones del contacto respectivamente.
+        if cont == 0:
+            viaje_Modificado = input("Ingrese la ciudad de salida: ")
+            viaje[linea] =viaje_Modificado + "\n"
+            return Modificar_viaje_Aux(viaje, linea+1, cont+1)
+        elif(cont==1):
+            viaje_Modificado=input("Ingrese la fecha: ")
+            viaje[linea]=viaje_Modificado+"\n"
+            return Modificar_viaje_Aux(viaje, linea+1, cont+1)
+        elif(cont==2):
+            viaje_Modificado=input("Ingrese la nueva hora de salida: ")
+            viaje[linea]=viaje_Modificado+"\n"
+            return Modificar_viaje_Aux(viaje, linea+1, cont+1)
+        elif(cont==3):
+            viaje_Modificado=input("Ingrese la nueva ciudad de llegada: ")
+            viaje[linea]=viaje_Modificado+"\n"
+            return Modificar_viaje_Aux(viaje, linea+2, cont+1)
+        elif(cont==4):
+            viaje_Modificado=input("Ingrese la fecha de llegada nueva: ")
+            viaje[linea]=viaje_Modificado+"\n"
+            return Modificar_viaje_Aux(viaje, linea+1, cont+1)
+        elif(cont==5):
+            viaje_Modificado=input("Ingrese la nueva hora de llegada: ")
+            viaje[linea]=viaje_Modificado+"\n"
+            return Modificar_viaje_Aux(viaje, linea+1, cont+1)
+        elif(cont==6):
+            lista=open("Gestion de transporte.txt")
+            lista=lista.read()
+            print(lista)
+            empresas=open("Gestion de empresa.txt")
+            empresas=empresas.readlines()
+        
+            viaje_Modificado=input("Ingrese la empresa de transporte: ")
+            if(viaje_Modificado+"\n")in empresas:
+                viaje[linea]=viaje_Modificado+"\n"
+                return Modificar_viaje_Aux(viaje, linea+1, cont+1)
+            else:
+                print("\n")
+                print("Error, Ingrese una de las empresas disponibles")
+                print("\n")
+                return Modificar_viaje_Aux(viaje, linea, cont)
+        else:
+            montos=input("1. Clase VIP:$100, 2. Clase Normal:$50, 3. Clase economico:$25 ")
+            if(montos=="1"):
+                viaje[linea]="Clase VIP:$100"+"\n"
+                return Modificar_viaje_Aux(viaje, linea+1, cont+1) 
+            elif(montos=="2"):
+                viaje[linea]="Clase Normal:$50"+"\n"
+                return Modificar_viaje_Aux(viaje, linea+1, cont+1)
+
+            elif(montos=="3"):
+                viaje[linea]="Clase economico:$25"+"\n"
+                return Modificar_viaje_Aux(viaje, linea+1, cont+1)
+
+            else:
+                print("\n")
+                print("Error, digite una de las clases disponible, la opcion {montos} no esta disponible")
+                print("\n")
+                return Modificar_viaje_Aux(viaje, linea, cont)
+            
+
+
+
 
     
+
+    
+    
+#--------------------------------------------------------------------------------------------------------------------------
+"""
+Nombre: mostrar_viajes()
+Entradas:
+    El archivo en modo de lectura.
+Salida:
+    Va a dar una lista de todos lo contactos existentes en la agenda.
+Restricciones:
+    Abrir el archivo de manera correcta.
+"""        
+def mostrar_viajes():
+    archivo="Gestion de viaje.txt"
+    agenda= open (archivo,'r')#Se abre el archivo en el modo que deseamos.
+    """
+    En la función *f. = open (nombreArchivo,'r')* donde f. corresponde a file que es un dato o información
+    que se guarda en el dispositivo de almacenamiento de la computadora. A nuestra variable file le dimos el
+    nombre de agenda para que fuera de mejor entendimiento.
+    """
+    contador =1
+    for linea in agenda:
+        print("linea",contador,":",linea)#Imprimir todos los contactos existentes en la agenda.
+        contador+=1 #Agregamos un contador para que el usuario pueda ver en que linea corresponde a cada dato. 
+    agenda.close()#Importante cerrar el archivo.
+    """
+    En la función *f.close()* donde f. corresponde a file y a nuestra variable file le dimos el
+    nombre de agenda para que fuera de mejor entendimiento.
+    """
+    return Gestion_de_viaje()
+    
         
-        
+#-----------------------------------------------------------------------------------------------------------------------------
+
+def Consultar_historial_de_reservaciones():
+    print("\t","\t","\t",">>>>>Filtra la informacion  por:<<<<<")
+    print("\n")
+    print("1. Rango de fecha de salida. ")
+    print("2. Rango de fecha de llegada. ")
+    print("3. Rango de fecha de la reservación. ")
+    print("4. lugar de salida y llegada.")
+    print("5. Regresar.")
+    print("\n")
+    op=input("Digite una de las opciones disponible: ")
+    if(op=="1"):
+        return
+    elif(op=="2"):
+        return
+    elif(op=="3"):
+        return
+    elif(op=="4"):
+        return
+    elif(op=="5"):
+        return admistrativas()
+    else:
+        print("\n")
+        print("Error,Digite una de las opciones disponible,la opcion {op} no existe o no esta disponible.")
+        print("\n")
+        return Consultar_historial_de_reservaciones()
+    
+
+
+#----------------------------------------------------------------------------------------------------------------------------------
+
+
 menu()
 
