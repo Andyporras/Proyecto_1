@@ -88,7 +88,7 @@ def usuarioNormal():
     if(op=="1"):
         return consulta_de_viajes()
     elif(op=="2"):
-        return
+        return Reservacion_de_viaje()
     elif(op=="3"):
         return
     elif(op=="9"):
@@ -191,7 +191,7 @@ def eliminar_empresa():
     archivo=open("Gestion de empresa.txt")
     empresas=archivo.readlines()
     if((cedula+"\n") in empresas):
-        archivo1=open("Gestion de viaje.txt")
+        archivo1=open("Gestion de transporte.txt")
         datos=archivo1.readlines()        
         linea = empresas.index(cedula+"\n")
         verificar=verificar_aux(empresas,linea+1,0,[])
@@ -685,7 +685,7 @@ def registrar_viajes():
     if(empresa+"\n")in transporte:
         monto1=input("Ingrese el valor de la clase VIP: ")
         monto2=input("Ingrese el valor de la clase normal: ")
-        monto3=input("INgrese el valro de la clase economica: ")
+        monto3=input("INgrese el valor de la clase economica: ")
         numero_de_viaje=str(numero_de_viaje)
         archivo.write("numero de viaje: "+numero_de_viaje+"\n")
         archivo.write(ciudad_de_salida+"\n")
@@ -720,11 +720,11 @@ def numero_de_viaje_aux():
     que se guarda en el dispositivo de almacenamiento de la computadora. A nuestra variable file le dimos el
     nombre de agenda para que fuera de mejor entendimiento.
     """
-    contador =1
+    contador=0
     for linea in agenda:
         contador+=1
     agenda.close()
-    return contador//10
+    return contador//11+1
 #----------------------------------------------------------------------------------------------------------------------------
 
 def eliminar_viajes():
@@ -900,36 +900,49 @@ def mostrar_viajes():
         
 #-----------------------------------------------------------------------------------------------------------------------------
 
-def Consultar_historial_de_reservaciones():
-    print("\t","\t","\t",">>>>>Filtra la informacion  por:<<<<<")
+
+def consulta_de_viajes():
     print("\n")
-    print("1. Rango de fecha de salida. ")
-    print("2. Rango de fecha de llegada. ")
-    print("3. Rango de fecha de la reservación. ")
-    print("4. lugar de salida. ")
-    print("5. lugar de llegada. ")
-    print("6. Regresar.")
+    print("\t","\t","\t",">>>>>menu de consulta de viajes<<<<<")
     print("\n")
-    op=input("Digite una de las opciones disponible: ")
+    print("1. Empresa. ")
+    print("2. Lugar de salida.")
+    print("3. Lugar de llegadda. ")
+    print("4. Rango de fecha de salida. ")
+    print("5. Rango de fecha de llegada. ")
+    print("6. Regresar. ")
+    op=input("Seleccione el filtro que necesite: ")
     if(op=="1"):
-        return rango_de_salida()
+        return buscar_empresa()
     elif(op=="2"):
-        return rango_de_llegada()
-    elif(op=="3"):
-        return 
-    elif(op=="4"):
         return lugar_de_salida()
-    elif(op=="5"):
+    elif(op=="3"):
         return lugar_de_llegada()
+    elif(op=="4"):
+        return rango_de_salida()
+    elif(op=="5"):
+        return rango_de_llegada()
     elif(op=="6"):
-        return admistrativas()
+        return usuarioNormal()
     else:
         print("\n")
         print("Error,Digite una de las opciones disponible,la opcion {op} no existe o no esta disponible.")
         print("\n")
-        return Consultar_historial_de_reservaciones()
+        return consulta_de_viajes()
     
 #-----------------------------------------------------------------------------------------------------------------------------
+
+def buscar_empresa():
+    empresa=input("Ingrese la empresa a buscar: ")
+    archivo=open("Gestion de viaje.txt")
+    lista=archivo.readlines()
+    buscar_por_filtro(lista,empresa,7,False,7)
+    return Consultar_historial_de_reservaciones()    
+
+#-----------------------------------------------------------------------------
+
+
+    
 """
 Nombre: BúsquedasAvanzadas()
 Entrada:
@@ -1009,21 +1022,19 @@ def Estadisticas_de_viaje():
     print()
 
 #----------------------------------------------------------------------------------------------------------------------------------
-
-
-def consulta_de_viajes():
+def Consultar_historial_de_reservaciones():
+    print("\t","\t","\t",">>>>>Filtra la informacion  por:<<<<<")
     print("\n")
-    print("\t","\t","\t",">>>>>menu de consulta de viajes<<<<<")
+    print("1. Rango de fecha de salida. ")
+    print("2. Rango de fecha de llegada. ")
+    print("3. Rango de fecha de la reservación. ")
+    print("4. lugar de salida. ")
+    print("5. lugar de llegada. ")
+    print("6. Regresar.")
     print("\n")
-    print("1. Empresa. ")
-    print("2. Lugar de salida.")
-    print("3. Lugar de llegadda. ")
-    print("4. Rango de fecha de salida. ")
-    print("5. Rango de fecha de llegada. ")
-    print("6. Regresar. ")
-    op=input("Seleccione el filtro que necesite: ")
+    op=input("Digite una de las opciones disponible: ")
     if(op=="1"):
-        return
+        return 
     elif(op=="2"):
         return
     elif(op=="3"):
@@ -1040,14 +1051,100 @@ def consulta_de_viajes():
         print("\n")
         print("ERROR,Ingrese una de las opciones disponible, la opcion {op} no esta disponible o no existe.")
         print("\n")
-        return consulta_de_viajes()
+        return Consultar_historial_de_reservaciones()
 #----------------------------------------------------------------------------------------------------------------------------
+
+
+
+#---------------------------------------------------------------------------------------------
+    
+
+def Reservacion_de_viaje():
+    archivo=open("Gestion de viaje.txt")
+    mostrar=archivo.read()
+    print(mostrar)
+    numero=input("Ingrese el numero de viaje a reservar: ")
+    archivo=open("Gestion de viaje.txt")
+    viaje=archivo.readlines()
+    print(viaje)
+    if("numero de viaje: "+numero+"\n")in viaje:
+        nombre=input("Ingrese su nombre: ")
+        Vip=input("Ingrese la cantidad de asiento VIP a reservar: ")
+        Normal=input("Ingrese la cantidad de asienrto Normal a reservar: ")
+        Economico=input("Ingrese la cantidad de asiento Economico a reservar: ")
+        linea=viaje.index("numero de viaje: "+numero+ "\n")
+        mostrar1=Mostrar_viaje1(viaje,linea,0,[])
+        archivo1=open("reservacion de viaje.txt")
+        archivo1=archivo1.readlines()
+        reserva=contar_aux(archivo1)
+        reserva=str(reserva)
+        
+        comprobante=reserva+"\n"
+        comprobante+=nombre+"\n"
+        comprobante+="\n"
+        dato1=mostrar1[7]+"\n"
+        comprobante+=dato1
+        dato2=Convertir_A_String(mostrar1[1:7])
+        comprobante+=dato2+"\n"
+        comprobante+=Vip+"\n"
+        comprobante+=Normal+"\n"
+        comprobante+=Economico+"\n"
+        presio=mostrar1[8]
+        presio=a_entero(presio,11)
+        presio=int(presio)
+        presio2=mostrar1[9]
+        presio2=a_entero(presio2,14)
+        presio2=int(presio2)
+        presio3=mostrar1[10]
+        presio3=a_entero(presio3,17)
+        presio3=int(presio3)
+        suma=(int(Vip)*presio)+(int(Normal)*presio2)+(int(Economico)*presio3)
+        suma1=str(suma)
+        comprobante+=suma1
+        print(comprobante)
+        archivo2=open("reservacion de viaje.txt","a")
+        archivo2.write(comprobante+"\n")
+        archivo2.close()
+        return usuarioNormal()
+    else:
+        print("\n")
+        print(f"Error,El numero de viaje no existe,vuelvalo a intentar.")
+        print("\n")
+        return Reservacion_de_viaje()
+        
+        
+        
+              
+    
+def Mostrar_viaje1(listaDeViaje, linea, cont,result):
+    if cont > 11:#Se hace la debida verificación de la restricción.
+        return result
+    else:#Si la primera restricción no se cumple se retorna a esta.
+        return Mostrar_viaje1(listaDeViaje, linea + 1, cont + 1,result+[(listaDeViaje[linea].rstrip())])
+
 
 
 
 #-------------------------------------------------------------------------------------------------------------------------
 
+def contar_aux(lista):
+    if(lista==[]):
+        return 1
+    else:
+        return reserva_aux(lista,0)
+
+def reserva_aux(lista,cont):
+    if(lista==[]):
+        return cont//11+1
+    else:
+        return reserva_aux(lista[1:],cont+1)
+
+
+#-------------------------------------------------------------------------
     
+def  a_entero(lista,eliminar):
+    return lista[eliminar:]
+#---------------------------------------------------------    
 
     
 menu()
