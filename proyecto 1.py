@@ -515,15 +515,23 @@ def eliminar_transporte():
     archivo=open("Gestion de transporte.txt")
     transportes=archivo.readlines()
     if((placa+"\n") in transportes):
+        archivo1=open("Gestion de empresa.txt")
+        empresas=archivo1.readlines()
         linea = transportes.index(placa+"\n")
-        eliminar=Eliminar_transporte_aux(transportes,linea,0)
-        archivo.close()
-        archivo=open("Gestion de transporte.txt","w")
-        archivo.write(eliminar)
-        archivo.close()
-        print(f"El transporte con la matricula {placa} a sido eliminado exitosamente ")
-        print("\n")
-        return Gestion_de_transporte()
+        print(linea)
+        print(transportes[linea+4] in empresas)
+        print(empresas)
+        if(transportes[linea+4]+"\n") in empresas ==False:
+            eliminar=Eliminar_transporte_aux(transportes,linea,0)
+            archivo.close()
+            archivo=open("Gestion de transporte.txt","w")
+            archivo.write(eliminar)
+            archivo.close()
+            print(f"El transporte con la matricula {placa} a sido eliminado exitosamente ")
+            print("\n")
+            return Gestion_de_transporte()
+        else:
+            return "Error, transporte asociado a una empresa."
     else:
         print(f"No se encontro el transporte con la matricula {placa} ,vuelva a intentarlo. ")
         archivo.close()
@@ -1034,10 +1042,89 @@ def lugar_de_llegada():
     return consulta_de_viajes()
 
 #------------------------------------------------------------------------------
-
+"""
+"""
 
 def Estadisticas_de_viaje():
-    print()
+    archivo=open("Gestion de viaje.txt")
+    viajes=archivo.read()
+    print(viajes)
+    op=input("Ingrese el numero del viaje: ")
+    datos=archivo.readlines()
+    linea=buscar_linea_aux(datos,op,0)
+    if(isinstance(linea,int)):
+        archivo=open("Gestion de viaje.txt")
+        datos=archivo.readlines()
+        print(datos[linea])
+        print(datos[linea+7])
+        print(datos[linea+8])
+        print("lugar de salida: "+datos[linea+1])
+        print("fecha de salida: "+datos[linea+2])
+        print("hora de salida: "+datos[linea+3])
+        print("lugar de llegada: "+datos[linea+4])
+        print("fecha de llegada: "+datos[linea+5])
+        print("hora de llegada: "+datos[linea+6])
+        archivo1=open("reservacion de viaje.txt")
+        datos2=archivo1.readlines()
+        linea2=linea_aux(datos2,datos[8],4)
+        print("total de asiento VIP reservado: "+datos2[linea2+7])
+        archivo3=open("Gestion de transporte.txt")
+        datos3=archivo3.readlines()
+        linea3=linea3_aux(datos3,datos[8],0)
+        vip=datos2[linea2+7]
+        vip=int(vip[4])
+        disponible=datos3[5]
+        disponible=disponible[:-1]
+        print("total de asiento VIP disponible: "+(str((int(datos3[5]))-(vip))))
+        
+    
+
+
+#-----------------------------------------------------------------------
+
+
+def linea3_aux(datos,buscar,linea):
+    if(len(datos))<=linea:
+        return False
+    else:
+        if(buscar in datos[linea]):
+            return linea
+        else:
+            return linea3_aux(datos,buscar,linea+9)
+
+
+
+
+
+#-------------------------------------------------------------
+        
+
+def linea_aux(datos,buscar,linea):
+    if(len(datos))<=linea:
+        return False
+    else:
+        if(buscar in datos[linea]):
+            return linea
+        else:
+            return linea_aux(datos,buscar,linea+17)
+
+
+
+
+
+#---------------------------------------------------------------------
+        
+def buscar_linea_aux(datos,buscar,linea):
+    if(len(datos))<=linea:
+        return False
+    else:
+        if(buscar in datos[linea]):
+            return linea
+        else:
+            return buscar_linea_aux(datos,buscar,linea+14)
+
+
+
 
 #----------------------------------------------------------------------------------------------------------------------------------
 def Consultar_historial_de_reservaciones():
