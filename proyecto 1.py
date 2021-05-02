@@ -1,6 +1,6 @@
 """
 nombre:menu
-entrada:  un numero segun la opcion que necesite
+entrada:  no hay 
 salidad: ejecucion de la opcion selecionada
 retrincciones: solo debe digitar las opciones presente y disponible
 """
@@ -36,7 +36,7 @@ def menu():
 #--------------------------------------------------------------------------------
 """
 nombre:admistrativas
-entrada: un caracter o numero segun la opcion que necesite
+entrada: no hay 
 salidad:  ejcucion de la opcion que digito
 retrinccione: solo debe selecionar las opciones disponible
 
@@ -72,7 +72,7 @@ def admistrativas():
 #-----------------------------------------------------------------------------
 """
 nombre:usuarioNormal
-entrada:un caracter segun la opcion que nesesite
+entrada: no hay una difinida
 salida: ejecucion de la opcion selecionada
 retrincciones: solo debe ser las opciones disponible
 
@@ -102,7 +102,7 @@ def usuarioNormal():
 #---------------------------------------------------------------------
 """
 nombre: Gestion_de_empresas
-entrada:un caracter segun la opcion que nesesite
+entrada: no hay una entrada definida
 salida:ejecucion de la opcion seleccionada
 retricciones: solo debe seleccionar las opciones disponible
 
@@ -162,7 +162,7 @@ def incluir_empresa():
             print("\n")
             return Gestion_de_empresas() 
         else:
-            print("Error,el nombre de la empresa ya existen. ")
+            print("Error,la cedula de la empresa ya existen. ")
             return incluir_empresa()           
     else:
         print("Error,digite una cedula con 10 digitos")
@@ -170,8 +170,9 @@ def incluir_empresa():
 #--------------------------------------------------------------------
 """
 nombre: almacenarInformacion1
-entrada:el nombre de un archivo
+entrada:archivo=el nombre de un archivo ya existente 
 salida: los datos del archivo en lista
+restrincciones: no hay restrincciones defenida
 
 """
 def almacenarInformacion1(archivo):
@@ -187,9 +188,9 @@ def almacenarInformacion1(archivo):
 #-----------------------------------------------------------------------
 """
 nombre:eliminar_empresa
-entrada:
-salida:
-retrincciones:
+entrada:no posee entradas
+salida: borrar la empresa seleccionada
+retrincciones:debe ingresar una placa existente o guardada en el archivo .txt
 """
 
 def eliminar_empresa():
@@ -228,10 +229,13 @@ def eliminar_empresa():
 #------------------------------------------------------------------------------------------------
 
 """
-nombre:
-entrada:
-salida:
-retrincciones:
+nombre: verificar_aux
+entrada:listaDeEmpresa= la informacion de las empresas
+linea= linea en que se encuentra la informacion buscada
+cont= un contador para detener la funcion
+datos =una lista lista vacia 
+salida: la linea buscada 
+retrincciones: debe ingresar dos numeros enteros y dos lista una vacia y la otra no.
 """
 def verificar_aux(listaDeEmpresa,linea,cont,datos):
     if cont ==1 :#Se hace la debida verificación de la restricción.
@@ -245,9 +249,11 @@ def verificar_aux(listaDeEmpresa,linea,cont,datos):
 #---------------------------------------------------------------------------------------------------------
     
 """
-nombre:
-entrada:
-salida:
+nombre:Eliminar_Empresa_aux
+entrada:empresas= la informacion de las empresas en lista
+linea =posicion del dato que se desea eliminar
+cont=condicion de parada
+salida:las linea 0 indices eliminado y return de una funcion para transformar la nueva lista en caracteres
 retrincciones:
 """
 def Eliminar_Empresa_aux(empresas,linea,cont):
@@ -264,7 +270,7 @@ def Eliminar_Empresa_aux(empresas,linea,cont):
 """
 Nombre: convertir_a_string(lista)
 Entrada:
-    lista = al dato que se desea convertir.
+    lista =lista del dato que se desea convertir.
 Salidas:
     Va a convertir el dato en un string.
 Retricciones:
@@ -280,6 +286,14 @@ def Convertir_A_String(lista):
         print("Error: No se puede convertir a string, debido a que el tipo de dato de entrada no es una lista.")
  
 #-------------------------------------------------------------------------------------------------------------------------------
+"""
+nombre:Modificar_empresa
+entrada: no tiene definida
+salida: un mensaje de que la empresa a sido modificada con exito
+restricciones:la cedula debe existir en el archivo de empresas
+"""
+
+
 def Modificar_empresa():
     cedula=input("ingrese la cedula de la empresa a modificar: ")
     empresas = ListaDeEmpresas()
@@ -308,7 +322,7 @@ def Modificar_empresa():
 
 #---------------------------------------------------------------------------------------------------------------------------------
 
-#Funcion de lista de contactos.
+#funcion de lista de empresas
 """
 Nombre: ListaDeEmpresas()
 Entrada:
@@ -334,6 +348,16 @@ def ListaDeEmpresas():
     return listaDeEmpresas
 
 #--------------------------------------------------------------------------------------------------------------------------
+#Función que muestra la empresa a modificar.
+"""
+nombre: Mostrar_Empresa
+entrada: listaDeEmpresa=datos de las empresas en lista
+indice= indice de donde se ubica la imformacion de la empresa a mostrar
+cont= el numero cero
+salida: los datos de la empresa que se desea mostrar
+restricciones: el cont (contador) debe ser mayor a 3
+"""
+
 def Mostrar_Empresa(listaDeEmpresa, indice, cont):
     if cont > 3:#Se hace la debida verificación de la restricción.
         print("\n")
@@ -401,10 +425,10 @@ def mostrar_empresas():
 
 #-------------------------------------------------------------------------------------------------------------------------------------------
 """
-nombre:
-entrada:
-salida:
-retrincciones:
+nombre:Gestion_de_transporte()
+entrada: no hay una definida 
+salida:un menu y la opcion solicitada del menu
+retrincciones:debe selecionar una de las opciones existente 
 """
 
 def Gestion_de_transporte():
@@ -435,6 +459,14 @@ def Gestion_de_transporte():
     
     
 #----------------------------------------------------------------------------------
+#Función que agrega o incluye el transporte.
+"""
+nombre: incluir
+entrada:pide la la matricula de la lista al usuario
+salida: un mensaje de que la empresa a sido agregado existosamente.
+restrinciones: la placa no debe existir en el archivo de transporte.
+"""
+
 
 def incluir():
     archivo=open("Gestion de transporte.txt","a")
@@ -1073,9 +1105,12 @@ def Estadisticas_de_viaje():
         linea3=linea3_aux(datos3,datos[8],0)
         vip=datos2[linea2+7]
         vip=int(vip[4])
-        disponible=datos3[5]
+        disponible=datos3[linea3+4]
         disponible=disponible[:-1]
-        print("total de asiento VIP disponible: "+(str((int(datos3[5]))-(vip))))
+        print(disponible)
+        print("total de asiento VIP disponible: "+(str((int(disponible[0:])-(vip))))
+        print("total de asiento Normal reservado: "+datos2[linea2+8])
+        
         
     
 
