@@ -1592,7 +1592,91 @@ restricciones: no hay una definida.
 def a_entero(lista,eliminar):
     return lista[eliminar:]
 #---------------------------------------------------------    
+"""
+nombre: Cancelacion_de_reservacion
+entrada:numero de la reservacion
+salida: un mensaje de confirmacion de que ya se cancelo la reservacion.
+restricciones: el numero de indetificador debe existir en el archivo de reservacion.
+"""
+def Cancelacion_de_reservacion():
+    identificador=input("Digite el numero identificador de la reservacion: ")
+    archivo=open("reservacion de viaje.txt")
+    reservaciones=archivo.readlines()
+    if(comprobar_si_existe(reservaciones,"numero de reserva:"+identificador+"\n")):
+        linea=bucar_indece_aux(reservaciones,"numero de reserva:"+identificador+"\n",0)
+        cancelar=Cancelacion_de_reservacion_aux(reservaciones,linea,0)
+        archivo.close()
+        archivo=open("reservacion de viaje.txt","w")
+        archivo.write(cancelar)
+        archivo.close()
+        print("\t","\t","\t","reservacion cancelada con exito.")
+        return usuarioNormal()
+        
+    else:
+        print("Error, Ingrese un numero de identificador que exista")
+        op=input("desea realizar de nuevo la opcion o desea retornar al menu si desea realizar de nuevo la operacion presione 1 de no ser asi toque cualquier tecla o enter.")
+        if(op=="1"):
+            return Cancelacion_de_reservacion()
+        else:
+            return usuarioNormal()
+
+#------------------------------------------------------------------------
+"""
+nombre: bucar_indece_aux
+entrada: lista = un conjunto de lista.
+buscar dato a buscar en las listas.
+cont= contador qeu inicia desde 0
+salida= retorna el indice de donde se encuentra el dato a buscar.
+restricciones: la lista no debe estar vacia.
+"""
+def bucar_indece_aux(lista,buscar,cont):
+    if(lista==[]):
+        return print("no existe ese dato. ")
+    else:
+        if(buscar in lista[0]):
+            return cont
+        else:
+            return bucar_indece_aux(lista[1:],buscar,cont+1)
+
+#-------------------------------------------------------------------------------------------------
+"""
+nombre: comprobar_si_existe
+entrada: lista= un conjunto de lista
+buscar= que se decea buscar.
+salida: True si se encontro el dato y False si no se encontro.
+restricciones: si la lista esta vacia se retorna False.
+"""
+def comprobar_si_existe(lista,buscar):
+    if(lista==[]):
+        return False
+    else:
+        if(buscar in lista[0]):
+            return True
+        else:
+            return comprobar_si_existe(lista[1:],buscar)
+
+#-----------------------------------------------------------
+
+"""
+nombre: Cancelacion_de_reservacion_aux
+entrada: lista= conjunto de listas.
+linea=indice.
+cont=un contador.
+salida: los indice que se va a eliminar.
+restricciones: se detiene la rescursion una vez que el contador sea mayor a 15
+"""
+def Cancelacion_de_reservacion_aux(lista,linea,cont):
+    if(cont>15):
+        return Convertir_A_String(lista)
+    else:
+        print(lista[linea])
+        lista.pop(linea)
+        return Cancelacion_de_reservacion_aux(lista,linea,cont+1)
+    
 
     
+#-------------------------------------------------------------------------------------------------
+
+
 menu()
 
