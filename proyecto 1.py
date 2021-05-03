@@ -93,7 +93,7 @@ def usuarioNormal():
     elif(op=="2"):
         return Reservacion_de_viaje()
     elif(op=="3"):
-        return
+        return Cancelacion_de_reservacion()
     elif(op=="9"):
         return menu()
     else:
@@ -181,8 +181,6 @@ def almacenarInformacion1(archivo):
     informacion.close()
     
     return almacenar
-
-#----------------------------------------------------------------------
 
 
 #-----------------------------------------------------------------------
@@ -540,6 +538,12 @@ def ListaDeTransporte():
     return listaDeTransporte
 
 #---------------------------------------------------------------------------------------
+"""
+nombre: eliminar_transporte
+entrada: caracteres ingresados por el usuario
+salida: mensaje de que indique la eliminacion del transporte.
+restricciones: la placa ingresado por el usuario debe existir en el archivo de transporte.
+"""
 
 
 def eliminar_transporte():
@@ -547,13 +551,10 @@ def eliminar_transporte():
     archivo=open("Gestion de transporte.txt")
     transportes=archivo.readlines()
     if((placa+"\n") in transportes):
-        archivo1=open("Gestion de empresa.txt")
-        empresas=archivo1.readlines()
+        archivo1=open("Gestion de viaje.txt")
+        viaje=archivo1.readlines()
         linea = transportes.index(placa+"\n")
-        print(linea)
-        print(transportes[linea+4] in empresas)
-        print(empresas)
-        if(transportes[linea+4]+"\n") in empresas ==False:
+        if(transportes[linea]) in viaje ==False:
             eliminar=Eliminar_transporte_aux(transportes,linea,0)
             archivo.close()
             archivo=open("Gestion de transporte.txt","w")
@@ -563,14 +564,22 @@ def eliminar_transporte():
             print("\n")
             return Gestion_de_transporte()
         else:
-            return "Error, transporte asociado a una empresa."
+            print("Error, transporte asociado a un viaje.")
+            return eliminar_transporte()
     else:
         print(f"No se encontro el transporte con la matricula {placa} ,vuelva a intentarlo. ")
         archivo.close()
         return eliminar_transporte()
 
 #----------------------------------------------------------------------------------------------
-
+"""
+nombre:Eliminar_transporte_aux
+entrada: transporte=la informacion de los transporte en lista
+linea= linea de la lista que se desea eliminar
+cont=un numero cero que ira aumentado su valor por uno por cada recursion que se realice hasta que se cumpla la condición.
+salida: la lineas o indice de la lista que fue eliminada de la lista.
+restricciones: el cont(contador) debe tener el valor de 9 para terminar la recurción 
+"""
 def Eliminar_transporte_aux(transporte,linea,cont):
     if (cont==9):
         return Convertir_A_String(transporte)
@@ -581,11 +590,19 @@ def Eliminar_transporte_aux(transporte,linea,cont):
 
 
 #----------------------------------------------------------------------------------------
+"""
+nombre: Modificar_transporte
+entrada: la entrada no esta definida , ya que es ingresada por el usuario.
+salida: mensaje que indica que el transporte a sido modificado exitosamente.
+restricciones: la placa debe existir en el archivo de las empresas.
+"""
+
+
 
 def Modificar_transporte():
     placa=input("Ingrese la placa del transporte a modificar: ")
     transporte = ListaDeTransporte()
-    if ((placa + "\n") in transporte):#Verificamos que el número de cédula se encuetre en el archivo. 
+    if ((placa + "\n") in transporte):#Verificamos que el dato de la placa se encuetre en el archivo. 
         linea = transporte.index(placa + "\n")
         Mostrar_transporte(transporte, linea, 0)
         transporte_Modificado = Modificar_transporte_Aux(transporte, linea, 0)#Se creo una variable para ingresar los nuevos datos.
@@ -599,7 +616,7 @@ def Modificar_transporte():
         Gestion.close()#Importante cerrar el archivo.
         """
         En la función *f.close()* donde f. corresponde a file y a nuestra variable file le dimos el
-        nombre de agenda para que fuera de mejor entendimiento.
+        nombre de Gestion para que fuera de mejor entendimiento.
         """
         print("\n", "\t", "\t", "\t","¡Transporte modificado con éxito! ", "\n")
         return Gestion_de_transporte()
@@ -608,7 +625,13 @@ def Modificar_transporte():
         return Gestion_de_transporte()#Retorna nuevamente a la función para que el usuario lo vuelva a intentar.
     
 #--------------------------------------------------------------------------------------------------------------------
-
+"""
+nombre:Mostrar_transporte
+entrada: listaDeTransporte= los datos del archivo de transporte pero en lista.
+linea= linea que se desea mostrar
+cont= el numero cero que aumentara por cada recursion hasta que se cumpla la condicion de parada.
+restricciones: el cont(contador) debe ser mayor a 8
+"""
 def Mostrar_transporte(listaDeTransporte, linea, cont):
     if cont > 8:#Se hace la debida verificación de la restricción.
         print("\n")
@@ -618,7 +641,14 @@ def Mostrar_transporte(listaDeTransporte, linea, cont):
 
 
 #--------------------------------------------------------------------------------------------------
-
+"""
+nombre:Modificar_transporte_Aux
+entrada: transporte=los datos de el archivo que contiene los transporte en lista
+linea= linea o indice de donde se encuentra los datos a modificar de la lista.
+cont=el numero cero.
+salida:retorna el la varible que contiene los datos ya modificado
+restricciones: el cont(contador) debe ser igual a 8
+"""
 def Modificar_transporte_Aux(transporte, linea , cont):
     if cont == 8:
         return transporte#Archivo al cual le se le dió ese nombre.
@@ -688,7 +718,12 @@ def mostrar_Transporte():
     return Gestion_de_transporte()
 
 #-----------------------------------------------------------------------------------------------------------------------
-
+"""
+nombre:Gestion_de_viaje
+entrada: un caracter ingresado por el usuario
+salida: imprime un menor y despues se ejecuta la opcion que solicito.
+restricciones: debe ingresar el usuario unas de las opciones disponible.
+"""
 def Gestion_de_viaje():
     print("\t","\t","\t",">>>>>Gestion de viaje<<<<<")
     print("1. registrar viajes")
@@ -716,7 +751,12 @@ def Gestion_de_viaje():
     
 
 #-----------------------------------------------------------------------------------------------
-
+"""
+nombre:registrar_viajes
+entrada:diferentes datos ingresados por el usuario
+salida:un mensaje de que ek viaje se realizo con existo
+restricciones:debe ingresar una placa que exista en el archivo que se almacena las empresas.
+"""
 def registrar_viajes():
     archivo="Gestion de viaje.txt "
     archivo=open(archivo,"a")
@@ -764,7 +804,12 @@ def registrar_viajes():
 
 
 #-----------------------------------------------------------------------------
-
+"""
+nombre: numero_de_viaje_aux
+entrada: no hay una definida
+salida: un numero segun la cantida de linea que tenga el archivo de viaje.
+restricciones: no hay una definida.
+"""
 def numero_de_viaje_aux():
     archivo="Gestion de viaje.txt"
     agenda= open (archivo,'r')#Se abre el archivo en el modo que deseamos.
@@ -780,6 +825,12 @@ def numero_de_viaje_aux():
     return contador//11+1
 #----------------------------------------------------------------------------------------------------------------------------
 
+"""
+nombre:eliminar_viajes
+entrada: numero del viaje.
+salida: mensaje indicando que el viaje fue eliminado.
+restricciones:el numero del viaje debe existir.
+"""
 def eliminar_viajes():
     numero_de_viaje=input("Ingrese el numero de su viaje: ")
     numero_de_viaje=str(numero_de_viaje)
@@ -803,7 +854,15 @@ def eliminar_viajes():
         
 
 #------------------------------------------------------------------------------------------------------------------------------
+"""
+nombre: Eliminar_viaje_aux
+entrada: viaje= la informacion de la los viajes en lista
+linea= linea o indice de la linea que se desea eliminar.
+cont= un contador que inicia desde 0.
+salida: las linea o indice de las lista que se eliminaron.
+restricciones: el cont(contador) debe tener ser igual a 13
 
+"""
 def Eliminar_viaje_aux(viajes,linea,cont):
     if (cont==13):
         return Convertir_A_String(viajes)
@@ -813,6 +872,13 @@ def Eliminar_viaje_aux(viajes,linea,cont):
         return Eliminar_viaje_aux(viajes,linea,cont+1)
 
 #-----------------------------------------------------------------------------------------------------------------------------
+"""
+nombre:modificar_viaje
+entrada: dato ingresado por el usuario
+salida: mensaje indicando que el viaje fue eliminado
+restricciones: el usuario debe ingresar un numero de viaje que existan en el archivo de viajes.
+"""
+
 def modificar_viaje():
     numero=input("Ingrese el numero de viaje,del viaje a modificar: ")
     archivo=open("Gestion de viaje.txt")
@@ -845,7 +911,14 @@ def modificar_viaje():
 
 #_-------------------------------------------------------------------------------------------------------------------------------------
     
-
+"""
+nombre: Mostrar_viaje
+entrada: listaDeViaje= informacion de los viaje sen lista.
+linea= indice que se desea imprimir
+cont=un contador que inicia desde cero
+salida: la informacion del viaje que se desea mostrar
+restricciones: el contador debe ser mayor a 12 para que termine la recursion
+"""
 def Mostrar_viaje(listaDeViaje, linea, cont):
     if cont > 12:#Se hace la debida verificación de la restricción.
         print("\n")
@@ -854,7 +927,14 @@ def Mostrar_viaje(listaDeViaje, linea, cont):
         return Mostrar_viaje(listaDeViaje, linea + 1, cont + 1)
 
 #-------------------------------------------------------------------------------------------
-
+"""
+nombre: Modificar_viaje_Aux
+entrada: viaje=informacion de los viajes en listas.
+linea= indice que se desea modificar
+cont=un contador que inicia desde cero
+salida: la informacion de los viajes ya editados.
+restricciones: el contador debe ser igual a 10 para que termine la recursion
+"""
 
 def Modificar_viaje_Aux(viaje, linea , cont):
     if cont == 10:
@@ -957,7 +1037,12 @@ def mostrar_viajes():
     
         
 #-----------------------------------------------------------------------------------------------------------------------------
-
+"""
+nombre:consulta_de_viajes
+entrada:una opcion seleccionada por el usuario
+salida: imprime un menu y despues se ejecuta la opcion seleccionada
+restricciones: el usuario debe ingresar una de las opciones presente.
+"""
 
 def consulta_de_viajes():
     print("\n")
@@ -989,7 +1074,12 @@ def consulta_de_viajes():
         return consulta_de_viajes()
     
 #-----------------------------------------------------------------------------------------------------------------------------
-
+"""
+nombre:buscar_empresa
+entrada: caracteres
+salida: se retorna una funcion que buscara el dato ingresado por el usuario.
+restricciones: no hay una definida.
+"""
 def buscar_empresa():
     empresa=input("Ingrese la empresa a buscar: ")
     archivo=open("Gestion de viaje.txt")
@@ -1002,13 +1092,13 @@ def buscar_empresa():
 
     
 """
-Nombre: BúsquedasAvanzadas()
+Nombre: rango_de_salida()
 Entrada:
-    nombre = nombre del contacto que desea buscar.
+    fecha = fecha que se desea  buscar.
 Salidas:
-    Retorna el o los contactos al que pertence que ese nombre.
+    Retorna una funcion que busca la fecha en el archivo de viaje.
 Retricciones:
-    Que nombre cumpliera las restricciones dadas en su función madre *agregarContacto()*
+    no hay una definida
 """    
 
 def rango_de_salida():
@@ -1020,10 +1110,10 @@ def rango_de_salida():
 
 #-----------------------------------------------------------
     """
-Nombre: BuscarContacto(Contactos, buscar,linea,ExisteElContacto, PrimeraLinea,nombre)
-Entrada: (Contactos, buscar,linea,ExisteElContacto, PrimeraLinea,nombre)
+Nombre: buscar_por_filtro(Contactos, buscar,linea,ExisteElContacto, PrimeraLinea,nombre)
+Entrada: (lista,buscar,linea,Existe,linea2,)
 Salidas:
-    Retornara la búsqueda del contacto según corresponda.
+    Retornara la búsqueda del viaje según corresponda.
 Retricciones:
     Verificacion de los parámetros de entrada.
 """
@@ -1044,7 +1134,12 @@ def buscar_por_filtro(lista,buscar,linea,Existe,linea2,):
 
 
 #------------------------------------------------------------------------------------------
-
+"""
+nombre:rango_de_llegada
+entrada: fecha de llegada dada por el usuario
+salida: retorno de la funcion encargada que busca el dato ingresado por el usuario
+restricciones: no hay una definida.
+"""
 def rango_de_llegada():
     llegada=input("Ingrese la fecha de llegada a buscar: ")
     archivo=open("Gestion de viaje.txt")
@@ -1054,7 +1149,12 @@ def rango_de_llegada():
 
 
 #-----------------------------------------------------------------------------
-
+"""
+nombre: lugar_de_salida
+entrada:lugar= lugar de salida que ingrese el usuario.
+salida: retorno de la funcion encargada de buscar el dato ingresado por el usuario.
+restricciones: no hay una definida.
+"""
 def lugar_de_salida():
     lugar=input("Ingrese el lugar de salida a buscar: ")
     archivo=open("Gestion de viaje.txt")
@@ -1064,7 +1164,12 @@ def lugar_de_salida():
 
 #--------------------------------------------------------------------
 
-
+"""
+nombre:lugar_de_llegada
+entrada:lugar= lugar que ingrese el usuario.
+salida: retorno de la funcion encargada de buscar el dato ingresado por el usuario.
+restricciones: no hay una definida.
+"""
 
 def lugar_de_llegada():
     lugar=input("Ingrese el lugar de llegada: ")
@@ -1073,8 +1178,15 @@ def lugar_de_llegada():
     buscar_por_filtro(lista,lugar,4,False,4)
     return consulta_de_viajes()
 
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
+                            # funcion que falta de terminar.
+                            # priorida.
+
 """
+nombre:Estadisticas_de_viaje
+entrada: op= numero del viaje.
+salida: imprime los datos del viaje solicitado.
+restricciones: debe ser un numero entero la linea.
 """
 
 def Estadisticas_de_viaje():
@@ -1108,7 +1220,7 @@ def Estadisticas_de_viaje():
         disponible=datos3[linea3+4]
         disponible=disponible[:-1]
         print(disponible)
-        print("total de asiento VIP disponible: "+(str((int(disponible[0:])-(vip))))
+        print("total de asiento VIP disponible: "+(str((int(disponible[0:])-(vip)))))
         print("total de asiento Normal reservado: "+datos2[linea2+8])
         
         
@@ -1117,7 +1229,14 @@ def Estadisticas_de_viaje():
 
 #-----------------------------------------------------------------------
 
-
+"""
+nombre:linea3_aux
+entrada: datos= un conjunto de lista.
+buscar= dato a buscar en la lista.
+linea= indice de donde puede estar el dato a buscar.
+salida: False en caso que no se encontro el dato a buscar, o indice de donde esta el dato a buscar.
+restrinciones: la variable buscar debe estar en la variable datos. si no se encuentra el dato se retorna False. 
+"""
 def linea3_aux(datos,buscar,linea):
     if(len(datos))<=linea:
         return False
@@ -1133,6 +1252,15 @@ def linea3_aux(datos,buscar,linea):
 
 #-------------------------------------------------------------
         
+"""
+nombre:linea_aux
+entrada: datos= un conjunto de lista.
+buscar= dato a buscar en la lista.
+linea= indice de donde puede estar el dato a buscar.
+salida: False en caso que no se encontro el dato a buscar, o indice de donde esta el dato a buscar.
+restrinciones: la variable buscar debe estar en la variable datos. si no se encuentra el dato se retorna False. 
+
+"""
 
 def linea_aux(datos,buscar,linea):
     if(len(datos))<=linea:
@@ -1148,7 +1276,15 @@ def linea_aux(datos,buscar,linea):
 
 
 #---------------------------------------------------------------------
-        
+"""
+nombre: buscar_linea_aux
+entrada: datos= un conjunto de lista.
+buscar= dato a buscar en la lista.
+linea= indice de donde puede estar el dato a buscar.
+salida: False en caso que no se encontro el dato a buscar, o indice de donde esta el dato a buscar.
+restrinciones: la variable buscar debe estar en la variable datos. si no se encuentra el dato se retorna False. 
+
+"""
 def buscar_linea_aux(datos,buscar,linea):
     if(len(datos))<=linea:
         return False
@@ -1162,6 +1298,12 @@ def buscar_linea_aux(datos,buscar,linea):
 
 
 #----------------------------------------------------------------------------------------------------------------------------------
+"""
+nombre: Consultar_historial_de_reservaciones
+entrada: op=una de las opciones disponible.
+salida: imprime un menu y despues retorna la opcion seleccionada por el usuario.
+restricciones: debe seleccionar una de las opciones disponible. 
+"""
 def Consultar_historial_de_reservaciones():
     print("\t","\t","\t",">>>>>Filtra la informacion  por:<<<<<")
     print("\n")
@@ -1193,9 +1335,10 @@ def Consultar_historial_de_reservaciones():
 #----------------------------------------------------------------------------------------------------------------------------
 """
 nombre: rango_de_fecha_de_salida
-entrada:
-salida:
-restricciones:
+entrada: rango= una fecha suministrado por el usuario.
+salida:imprime los datos que tenga la misma fecha que ingreso el usuario y posterio a eso retorna la fucion de
+consultar_historial_de_reservaciones.
+restricciones:no hay una definida.
 
 """
 
@@ -1207,16 +1350,30 @@ def rango_de_fecha_de_salida():
     return Consultar_historial_de_reservaciones()
 
 #--------------------------------------------------------------------------------
+"""
+nombre: rango_de_fecha_de_llegada.
+entrada: rango= una fecha suministrado por el usuario.
+salida:imprime los datos que tenga la misma fecha que ingreso el usuario y posterio a eso retorna la fucion de
+consultar_historial_de_reservaciones.
+restricciones:no hay una definida.
 
+"""
 def rango_de_fecha_de_llegada():
     archivo=open("reservacion de viaje.txt")
     lineas=archivo.readlines()
-    rango=input("digite el rango de la fecha de llegad a filtar: ")
+    rango=input("digite el rango de la fecha de llegada a filtar: ")
     filtrar_por_informacion(lineas,rango,9,False,9)
     return Consultar_historial_de_reservaciones()
 
 #--------------------------------------------------------------------------------------
+"""
+nombre:rango_de_fecha_de_la_reservacion.
+entrada: rango= una fecha suministrado por el usuario.
+salida:imprime los datos que tenga la misma fecha que ingreso el usuario y posterio a eso retorna la fucion de
+consultar_historial_de_reservaciones.
+restricciones:no hay una definida.
 
+"""
 def rango_de_fecha_de_la_reservacion():
     archivo=open("reservacion de viaje.txt")
     lineas=archivo.readlines()
@@ -1225,7 +1382,14 @@ def rango_de_fecha_de_la_reservacion():
     return Consultar_historial_de_reservaciones()
 
 #------------------------------------------------------------------------------
+"""
+nombre: Buscar_lugar_de_salida.
+entrada: lugar= un lugar suministrado por el usuario.
+salida:imprime los datos que tenga el mismo lugar que ingreso el usuario y posterio a eso retorna la fucion de
+consultar_historial_de_reservaciones.
+restricciones:no hay una definida.
 
+"""
 def Buscar_lugar_de_salida():
     archivo=open("reservacion de viaje.txt")
     lineas=archivo.readlines()
@@ -1234,7 +1398,14 @@ def Buscar_lugar_de_salida():
     return Consultar_historial_de_reservaciones()
 
 #--------------------------------------------------------------------------------------------
+"""
+nombre: Buscar_lugar_de_llegada.
+entrada: lugar= un lugar suministrado por el usuario.
+salida:imprime los datos que tenga el mismo lugar que ingreso el usuario y posterio a eso retorna la fucion de
+consultar_historial_de_reservaciones.
+restricciones:no hay una definida.
 
+"""
 def Buscar_lugar_de_llegada():
     archivo=open("reservacion de viaje.txt")
     lineas=archivo.readlines()
@@ -1245,8 +1416,17 @@ def Buscar_lugar_de_llegada():
     
 
 #-------------------------------------------------------------------------------------------
-
-def filtrar_por_informacion(lista,buscar,linea,Existe,linea2,):
+"""
+nombre: filtar_por_informacion.
+entrada: lista= varible que contiene los datos del archivo de reservacion
+buscar= dato a buscar.
+linea= indice de donde se podria ubicar el dato a buscar.
+Existe= varible para comprobar si existe la informacion a buscar.
+linea2=indice de donde debe iniciar la impresion del dato a buscar.
+salida: muestra los datos que se encontro.
+restriciones: la linea debe ser menor que la cantidad de listas que contenga la variable lista 
+"""
+def filtrar_por_informacion(lista,buscar,linea,Existe,linea2):
     if linea > len(lista):
         if Existe:
             print(f"Estos son los viajes encontrados según el dato que ingreso. ")
@@ -1262,7 +1442,14 @@ def filtrar_por_informacion(lista,buscar,linea,Existe,linea2,):
 
 
 #--------------------------------------------------------------------------------------------------------------------------
-
+"""
+nombre:Mostrar_informacion
+entrada:datos = un conjunto de lista.
+linea= un indice.
+cont= un contador.
+salida: se imprime las lista solicitadas.
+restricciones: el contador debe ser igual a 16 para que termine la recursion.
+"""
 def Mostrar_informacion(datos,linea,cont):
     if cont ==16:#Se hace la debida verificación de la restricción.
         print("\n")
@@ -1271,7 +1458,13 @@ def Mostrar_informacion(datos,linea,cont):
         return Mostrar_informacion(datos, linea + 1, cont + 1)
 
 #---------------------------------------------------------------------------------------------
-    
+"""
+nombre: Reservacion_de_viaje
+entrada:los datos ingresado por el usario.
+salida: mensaje de que la reservacion se realizo con exito.
+restriccione:el numero del viaje debe estar en el archivo de viaje.
+
+"""
 
 def Reservacion_de_viaje():
     from datetime import datetime
@@ -1303,7 +1496,7 @@ def Reservacion_de_viaje():
         transporte=mostrar1[8]
         comprobante+="transporte:"+transporte+"\n"
         lugar_de_salida=mostrar1[1]
-        #Convertir_A_String(mostrar1[1:7])
+        
         
         comprobante+="lugar de salida:"+lugar_de_salida+"\n"
         fecha_de_salida=mostrar1[2]
@@ -1334,14 +1527,23 @@ def Reservacion_de_viaje():
         archivo2.write(comprobante+"\n")
         archivo2.write("--------------------------------------"+"\n")
         archivo2.close()
+        print("\t","\t","\t","reservacion realizada exitosamente.")
         return usuarioNormal()
     else:
         print("\n")
         print(f"Error,El numero de viaje no existe,vuelvalo a intentar.")
         print("\n")
         return Reservacion_de_viaje()
-        
-        
+
+#_---------------------------------------------------------------------------------------------------
+
+    
+"""
+nombre:Mostrar_viaje1
+entrada: listaDeViaje, linea, cont, result
+salida: una nueva lista con los datos que necesitamos
+restricciones: el contador debe ser mayor a 11 para que termine la recursion
+"""
         
               
     
@@ -1355,13 +1557,24 @@ def Mostrar_viaje1(listaDeViaje, linea, cont,result):
 
 
 #-------------------------------------------------------------------------------------------------------------------------
-
+"""
+nombre:contar_aux
+entrada: una lista.
+salida: retorno de la funcion reserva_aux
+restrinciones: si es una lista vacia retorna un uno
+"""
 def contar_aux(lista):
     if(lista==[]):
         return 1
     else:
         return reserva_aux(lista,0)
-
+#-------------------------------------------------------------
+"""
+nombre: reserva_aux
+entrada: una lista y un contador.
+salida:la cantida de listas que contenia la varible lista dividico entre 11+1
+restricciones: debe llegar la lista a un lista vacia para que finalise la recursion.
+"""
 def reserva_aux(lista,cont):
     if(lista==[]):
         return cont//11+1
@@ -1370,8 +1583,13 @@ def reserva_aux(lista,cont):
 
 
 #-------------------------------------------------------------------------
-    
-def  a_entero(lista,eliminar):
+"""
+nombre: a_entero
+entrada: una lista y un indice
+salida: la lista reducida y solo con los datos que necesitamos y otra funciones.
+restricciones: no hay una definida.
+"""
+def a_entero(lista,eliminar):
     return lista[eliminar:]
 #---------------------------------------------------------    
 
