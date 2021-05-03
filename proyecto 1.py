@@ -1085,6 +1085,7 @@ def buscar_empresa():
     archivo=open("Gestion de viaje.txt")
     lista=archivo.readlines()
     buscar_por_filtro(lista,empresa,7,False,7)
+    archivo.close()
     return consulta_de_viajes()    
 
 #-----------------------------------------------------------------------------
@@ -1106,6 +1107,7 @@ def rango_de_salida():
     archivo=open("Gestion de viaje.txt")
     lista=archivo.readlines()
     buscar_por_filtro(lista,fecha,2,False,2)
+    archivo.close()
     return consulta_de_viajes()
 
 #-----------------------------------------------------------
@@ -1145,6 +1147,7 @@ def rango_de_llegada():
     archivo=open("Gestion de viaje.txt")
     lista=archivo.readlines()
     buscar_por_filtro(lista,llegada,5,False,5)
+    archivo.close()
     return consulta_de_viajes()
 
 
@@ -1160,6 +1163,7 @@ def lugar_de_salida():
     archivo=open("Gestion de viaje.txt")
     lista=archivo.readlines()
     buscar_por_filtro(lista,lugar,1,False,1)
+    archivo.close()
     return consulta_de_viajes()
 
 #--------------------------------------------------------------------
@@ -1176,11 +1180,11 @@ def lugar_de_llegada():
     archivo=open("Gestion de viaje.txt")
     lista=archivo.readlines()
     buscar_por_filtro(lista,lugar,4,False,4)
+    archivo.close()
     return consulta_de_viajes()
 
 #----------------------------------------------------------------------------------------
-                            # funcion que falta de terminar.
-                            # priorida.
+                           
 
 """
 nombre:Estadisticas_de_viaje
@@ -1194,8 +1198,9 @@ def Estadisticas_de_viaje():
     viajes=archivo.read()
     print(viajes)
     op=input("Ingrese el numero del viaje: ")
-    datos=archivo.readlines()
-    linea=buscar_linea_aux(datos,op,0)
+    datos=archivo.readlines()# almacena los datos de los viajes
+    linea=buscar_linea_aux(datos,"numero de viaje: "+op+"\n",0)
+    print("")
     if(isinstance(linea,int)):
         archivo=open("Gestion de viaje.txt")
         datos=archivo.readlines()
@@ -1209,25 +1214,48 @@ def Estadisticas_de_viaje():
         print("fecha de llegada: "+datos[linea+5])
         print("hora de llegada: "+datos[linea+6])
         archivo1=open("reservacion de viaje.txt")
-        datos2=archivo1.readlines()
-        linea2=linea_aux(datos2,datos[8],4)
-        print("total de asiento VIP reservado: "+datos2[linea2+7])
+        datos2=archivo1.readlines()#almacena los datos de las reservaciones 
+        linea2=linea_aux(datos2,datos[linea+7],4)
+        print("total de asiento VIP reservado: "+datos2[linea2+11][4:])
         archivo3=open("Gestion de transporte.txt")
-        datos3=archivo3.readlines()
-        linea3=linea3_aux(datos3,datos[8],0)
-        vip=datos2[linea2+7]
-        vip=int(vip[4])
-        disponible=datos3[linea3+4]
+        datos3=archivo3.readlines()#almacena los datos de los transportes de los viaje.
+        linea3=linea3_aux(datos3,datos[linea+7],0)
+        vip=datos2[linea2+11]
+        vip=int(vip[4:-1])
+        disponible=datos3[linea3+5]
         disponible=disponible[:-1]
-        print(disponible)
+        normal=datos2[linea2+12]
+        normal=int(normal[7:-1])
         print("total de asiento VIP disponible: "+(str((int(disponible[0:])-(vip)))))
-        print("total de asiento Normal reservado: "+datos2[linea2+8])
+        print("total de asiento Normal reservado: "+datos2[linea2+12][7:-1])
+        disponible=datos3[linea3+6]
+        disponible=disponible[:-1]
+        print("Total de asiento Normal disponible: "+(str(int(disponible[0:])-(normal))))
+        economico=datos2[linea2+13]
+        economico=int(economico[10:-1])
+        print("Total de asiento economico reservado: "+(str(economico)))
+        disponible=datos3[linea3+7]
+        disponible=disponible[:-1]
+        print("Total de asiento economico disponible: "+(str(int(disponible)-(economico))))
+        costo_VIP=datos[linea+9][10:-1]
+        print("Costo del boleto Vip: "+costo_VIP)
+        Costo_normal=datos[linea+10][13:-1]
+        print("Costo del boleto Normal: "+Costo_normal)
+        Costo_Economico=datos[linea+11][16:-1]
+        print("Costo del boleto Normal: "+Costo_Economico)
+        print("Monto recaudado por el viaje. "+datos2[linea2+14][15:-1])
+        archivo.close()
+        archivo1.close()
+        archivo3.close()
+        return admistrativas()
+        
+        
         
         
     
 
 
-#-----------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------
 
 """
 nombre:linea3_aux
@@ -1347,6 +1375,7 @@ def rango_de_fecha_de_salida():
     lineas=archivo.readlines()
     rango=input("Ingrese el rango de fecha de salida a buscar: ")
     filtrar_por_informacion(lineas,rango,6,False,6)
+    archivo.close()
     return Consultar_historial_de_reservaciones()
 
 #--------------------------------------------------------------------------------
@@ -1363,6 +1392,7 @@ def rango_de_fecha_de_llegada():
     lineas=archivo.readlines()
     rango=input("digite el rango de la fecha de llegada a filtar: ")
     filtrar_por_informacion(lineas,rango,9,False,9)
+    archivo.close()
     return Consultar_historial_de_reservaciones()
 
 #--------------------------------------------------------------------------------------
@@ -1395,6 +1425,7 @@ def Buscar_lugar_de_salida():
     lineas=archivo.readlines()
     lugar=input("digite el lugar de salida a buscar: ")
     filtrar_por_informacion(lineas,lugar,5,False,5)
+    archivo.close()
     return Consultar_historial_de_reservaciones()
 
 #--------------------------------------------------------------------------------------------
@@ -1467,7 +1498,7 @@ restriccione:el numero del viaje debe estar en el archivo de viaje.
 """
 
 def Reservacion_de_viaje():
-    from datetime import datetime
+    from datetime import datetime # importo la bibloteca datetime para obtener la fecha del sistema 
     fecha_de_reservacion=datetime.now()
     archivo=open("Gestion de viaje.txt")
     mostrar=archivo.read()  
@@ -1621,6 +1652,7 @@ def Cancelacion_de_reservacion():
             return usuarioNormal()
 
 #------------------------------------------------------------------------
+
 """
 nombre: bucar_indece_aux
 entrada: lista = un conjunto de lista.
@@ -1629,6 +1661,7 @@ cont= contador qeu inicia desde 0
 salida= retorna el indice de donde se encuentra el dato a buscar.
 restricciones: la lista no debe estar vacia.
 """
+
 def bucar_indece_aux(lista,buscar,cont):
     if(lista==[]):
         return print("no existe ese dato. ")
@@ -1639,6 +1672,7 @@ def bucar_indece_aux(lista,buscar,cont):
             return bucar_indece_aux(lista[1:],buscar,cont+1)
 
 #-------------------------------------------------------------------------------------------------
+
 """
 nombre: comprobar_si_existe
 entrada: lista= un conjunto de lista
@@ -1646,6 +1680,7 @@ buscar= que se decea buscar.
 salida: True si se encontro el dato y False si no se encontro.
 restricciones: si la lista esta vacia se retorna False.
 """
+
 def comprobar_si_existe(lista,buscar):
     if(lista==[]):
         return False
@@ -1665,6 +1700,7 @@ cont=un contador.
 salida: los indice que se va a eliminar.
 restricciones: se detiene la rescursion una vez que el contador sea mayor a 15
 """
+
 def Cancelacion_de_reservacion_aux(lista,linea,cont):
     if(cont>15):
         return Convertir_A_String(lista)
@@ -1676,6 +1712,7 @@ def Cancelacion_de_reservacion_aux(lista,linea,cont):
 
     
 #-------------------------------------------------------------------------------------------------
+
 
 
 menu()
