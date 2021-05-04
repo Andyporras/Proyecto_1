@@ -1220,23 +1220,23 @@ def Estadisticas_de_viaje():
         print("hora de llegada: "+datos[linea+6])
         archivo1=open("reservacion de viaje.txt")
         datos2=archivo1.readlines()#almacena los datos de las reservaciones 
-        linea2=linea_aux(datos2,datos[linea+7],4)
-        print("total de asiento VIP reservado: "+datos2[linea2+11][4:])
+        linea2=linea_aux(datos2,datos[linea],0)
+        print("total de asiento VIP reservado: "+datos2[linea2+13][4:-1])
         archivo3=open("Gestion de transporte.txt")
         datos3=archivo3.readlines()#almacena los datos de los transportes de los viaje.
-        linea3=linea3_aux(datos3,datos[linea+7],0)
-        vip=datos2[linea2+11]
-        vip=int(vip[4:-1])
+        linea3=linea3_aux(datos3,datos[linea+8],0)
+        vip=datos2[linea2+13][4:-1]
+        vip=int(vip)
         disponible=datos3[linea3+5]
         disponible=disponible[:-1]
-        normal=datos2[linea2+12]
+        normal=datos2[linea2+14]
         normal=int(normal[7:-1])
         print("total de asiento VIP disponible: "+(str((int(disponible[0:])-(vip)))))
-        print("total de asiento Normal reservado: "+datos2[linea2+12][7:-1])
+        print("total de asiento Normal reservado: "+datos2[linea2+14][7:-1])
         disponible=datos3[linea3+6]
         disponible=disponible[:-1]
         print("Total de asiento Normal disponible: "+(str(int(disponible[0:])-(normal))))
-        economico=datos2[linea2+13]
+        economico=datos2[linea2+15]
         economico=int(economico[10:-1])
         print("Total de asiento economico reservado: "+(str(economico)))
         disponible=datos3[linea3+7]
@@ -1248,7 +1248,8 @@ def Estadisticas_de_viaje():
         print("Costo del boleto Normal: "+Costo_normal)
         Costo_Economico=datos[linea+11][16:-1]
         print("Costo del boleto Normal: "+Costo_Economico)
-        print("Monto recaudado por el viaje: "+datos2[linea2+14][15:-1])
+        suma=(vip*int(costo_VIP))+(normal*(int(Costo_normal)))+(economico*(int(Costo_Economico)))
+        print("Monto recaudado por el viaje: "+str(suma))
         archivo.close()
         archivo1.close()
         archivo3.close()
@@ -1302,7 +1303,7 @@ def linea_aux(datos,buscar,linea):
         if(buscar in datos[linea]):
             return linea
         else:
-            return linea_aux(datos,buscar,linea+17)
+            return linea_aux(datos,buscar,linea+1)
 
 
 
