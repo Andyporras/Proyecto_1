@@ -218,7 +218,11 @@ def eliminar_empresa():
     else:
         print(f"No se encontro ningúna empresa con la cedula {cedula} ,vuelva a intentarlo. ")
         archivo.close()
-        return eliminar_empresa()
+        op=input("desea repetir la opcion seleccione 1 de no ser asi ingrese cualquier otro dato: ")
+        if(op=="1"):
+            return eliminar_empresa()
+        else:
+            return Gestion_de_empresas()
         
     
         
@@ -492,7 +496,7 @@ def incluir():
             archivo.write(claseVip+"\n")
             archivo.write(claseNormal+"\n")
             archivo.write(claseEconomica+"\n")
-            archivo.write("--------------------------------------")
+            archivo.write("--------------------------------------"+"\n")
             archivo.close()
             print(f"transporte agregado existosamente. ")
             print("\n")
@@ -554,7 +558,8 @@ def eliminar_transporte():
         archivo1=open("Gestion de viaje.txt")
         viaje=archivo1.readlines()
         linea = transportes.index(placa+"\n")
-        if(transportes[linea]) in viaje ==False:
+        print(transportes[linea] in viaje)
+        if((transportes[linea]) in viaje) ==False:
             eliminar=Eliminar_transporte_aux(transportes,linea,0)
             archivo.close()
             archivo=open("Gestion de transporte.txt","w")
@@ -668,11 +673,11 @@ def Modificar_transporte_Aux(transporte, linea , cont):
         elif(cont==3):
             transporte_Modificado=input("Ingrese el nuevo año del transporte: ")
             transporte[linea]=transporte_Modificado+"\n"
-            return Modificar_transporte_Aux(transporte, linea+2, cont+1)
+            return Modificar_transporte_Aux(transporte, linea+1, cont+1)
         elif(cont==4):
             transporte_Modificado=input("Ingrese la nueva empresa del transporte: ")
             transporte[linea]=transporte_Modificado+"\n"
-            return Modificar_transporte_Aux(transporte, linea+2, cont+1)
+            return Modificar_transporte_Aux(transporte, linea+1, cont+1)
 
         elif(cont==5):
             transporte_Modificado=input("Ingrese la cantidad de asiento de clase Vip: ")
@@ -763,7 +768,7 @@ def registrar_viajes():
     numero_de_viaje=numero_de_viaje_aux()
     ciudad_de_salida=input("Ingrese la ciudad de salida: ")
     fecha=input("Ingrese la fecha de salida: ")
-    hora_de_salida=input("Ingrese la hora de salidad del viaje: ")
+    hora_de_salida=input("Ingrese la hora de salida del viaje: ")
     ciudad_de_llegada=input("Ingrese la ciudad de llegada: ")
     fecha_de_llegada=input("Ingrese la fecha de la llegada: ")
     hora_de_llegada=input("Ingrese la hora de la llegada: ")
@@ -1243,7 +1248,7 @@ def Estadisticas_de_viaje():
         print("Costo del boleto Normal: "+Costo_normal)
         Costo_Economico=datos[linea+11][16:-1]
         print("Costo del boleto Normal: "+Costo_Economico)
-        print("Monto recaudado por el viaje. "+datos2[linea2+14][15:-1])
+        print("Monto recaudado por el viaje: "+datos2[linea2+14][15:-1])
         archivo.close()
         archivo1.close()
         archivo3.close()
@@ -1374,7 +1379,7 @@ def rango_de_fecha_de_salida():
     archivo=open("reservacion de viaje.txt")
     lineas=archivo.readlines()
     rango=input("Ingrese el rango de fecha de salida a buscar: ")
-    filtrar_por_informacion(lineas,rango,6,False,6)
+    filtrar_por_informacion(lineas,rango,8,False,8)
     archivo.close()
     return Consultar_historial_de_reservaciones()
 
@@ -1391,7 +1396,7 @@ def rango_de_fecha_de_llegada():
     archivo=open("reservacion de viaje.txt")
     lineas=archivo.readlines()
     rango=input("digite el rango de la fecha de llegada a filtar: ")
-    filtrar_por_informacion(lineas,rango,9,False,9)
+    filtrar_por_informacion(lineas,rango,11,False,11)
     archivo.close()
     return Consultar_historial_de_reservaciones()
 
@@ -1408,7 +1413,7 @@ def rango_de_fecha_de_la_reservacion():
     archivo=open("reservacion de viaje.txt")
     lineas=archivo.readlines()
     rango=input("digite el rango de la fecha de reservacion a buscar: ")
-    filtrar_por_informacion(lineas,rango,2,False,2)
+    filtrar_por_informacion(lineas,rango,3,False,3)
     return Consultar_historial_de_reservaciones()
 
 #------------------------------------------------------------------------------
@@ -1424,7 +1429,7 @@ def Buscar_lugar_de_salida():
     archivo=open("reservacion de viaje.txt")
     lineas=archivo.readlines()
     lugar=input("digite el lugar de salida a buscar: ")
-    filtrar_por_informacion(lineas,lugar,5,False,5)
+    filtrar_por_informacion(lineas,lugar,7,False,7)
     archivo.close()
     return Consultar_historial_de_reservaciones()
 
@@ -1441,7 +1446,7 @@ def Buscar_lugar_de_llegada():
     archivo=open("reservacion de viaje.txt")
     lineas=archivo.readlines()
     lugar=input("digite el lugar de llegada a buscar: ")
-    filtrar_por_informacion(lineas,lugar,8,False,8)
+    filtrar_por_informacion(lineas,lugar,10,False,10)
     return Consultar_historial_de_reservaciones()
 
     
@@ -1467,9 +1472,9 @@ def filtrar_por_informacion(lista,buscar,linea,Existe,linea2):
         if buscar in lista[linea]:
             print("\n")
             Mostrar_informacion(lista,linea -linea2, 0)
-            return filtrar_por_informacion(lista, buscar, linea + 16, True, linea2)
+            return filtrar_por_informacion(lista, buscar, linea + 18, True, linea2)
         else:
-            return filtrar_por_informacion(lista, buscar, linea + 16, Existe, linea2)
+            return filtrar_por_informacion(lista, buscar, linea + 18, Existe, linea2)
 
 
 #--------------------------------------------------------------------------------------------------------------------------
@@ -1482,7 +1487,7 @@ salida: se imprime las lista solicitadas.
 restricciones: el contador debe ser igual a 16 para que termine la recursion.
 """
 def Mostrar_informacion(datos,linea,cont):
-    if cont ==16:#Se hace la debida verificación de la restricción.
+    if cont ==18:#Se hace la debida verificación de la restricción.
         print("\n")
     else:#Si la primera restricción no se cumple se retorna a esta.
         print(datos[linea].rstrip())
@@ -1517,11 +1522,12 @@ def Reservacion_de_viaje():
         archivo1=archivo1.readlines()
         reserva=contar_aux(archivo1)
         reserva=str(reserva)
-        
-        comprobante="numero de reserva:"+reserva+"\n"
+        comprobante="numero de viaje: "+numero+"\n"
+        comprobante+="numero de reserva:"+reserva+"\n"
         comprobante+="persona que reserva:"+nombre+"\n"
         fecha_de_reservacion=str(fecha_de_reservacion)
-        comprobante+="fecha y hora de la reservacion:"+fecha_de_reservacion[:-6]+"\n"
+        comprobante+="fecha de la reservacion:"+fecha_de_reservacion[:-15]+"\n"
+        comprobante+="hora de la reservacion:"+fecha_de_reservacion[15:]+"\n"
         empresa=mostrar1[7]+"\n"
         comprobante+="empresa:"+empresa
         transporte=mostrar1[8]
@@ -1635,7 +1641,7 @@ def Cancelacion_de_reservacion():
     reservaciones=archivo.readlines()
     if(comprobar_si_existe(reservaciones,"numero de reserva:"+identificador+"\n")):
         linea=bucar_indece_aux(reservaciones,"numero de reserva:"+identificador+"\n",0)
-        cancelar=Cancelacion_de_reservacion_aux(reservaciones,linea,0)
+        cancelar=Cancelacion_de_reservacion_aux(reservaciones,linea-1,0)
         archivo.close()
         archivo=open("reservacion de viaje.txt","w")
         archivo.write(cancelar)
@@ -1702,7 +1708,7 @@ restricciones: se detiene la rescursion una vez que el contador sea mayor a 15
 """
 
 def Cancelacion_de_reservacion_aux(lista,linea,cont):
-    if(cont>15):
+    if(cont>17):
         return Convertir_A_String(lista)
     else:
         print(lista[linea])
